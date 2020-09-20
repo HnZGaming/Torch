@@ -14,7 +14,7 @@ namespace Torch.Server.ElasticSearch
     /// </summary>
     public sealed class ElasticManager : Manager
     {
-        static readonly Logger _logger = LogManager.GetLogger(nameof(ElasticManager));
+        static readonly Logger _logger = LogManager.GetCurrentClassLogger();
         readonly CancellationTokenSource _canceller;
 
         /// <inheritdoc/>

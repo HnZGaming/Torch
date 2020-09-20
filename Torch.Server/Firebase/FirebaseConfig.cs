@@ -2,24 +2,22 @@
 using System.Xml.Serialization;
 using NLog;
 
-namespace Torch.Server.ElasticSearch
+namespace Torch.Server.Firebase
 {
     /// <summary>
-    /// Config for Elasticsearch integration.
+    /// Config for Firebase integration.
     /// </summary>
-    public class ElasticConfig
+    public class FirebaseConfig
     {
-        const string ConfigName = "Elastic.cfg";
-        const string DefaultNodeUrl = "http://localhost:9200";
+        const string ConfigName = "Firebase.cfg";
 
         static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
-        /// URL of the elasticsearch node.
-        /// Example: http://localhost:9200
+        /// Path to the Google Credential JSON file.
         /// </summary>
         [XmlElement]
-        public string NodeUrl { get; set; }
+        public string GoogleCredentialJsonPath { get; set; }
 
         /// <summary>
         /// Load the config file from the disk.
@@ -28,19 +26,19 @@ namespace Torch.Server.ElasticSearch
         /// New config file will be created if not found.
         /// </remarks>
         /// <returns>Loaded or created config.</returns>
-        public static ElasticConfig Load()
+        public static FirebaseConfig Load()
         {
             var configPath = Path.Combine(Directory.GetCurrentDirectory(), ConfigName);
 
-            var configSerializer = new XmlSerializer(typeof(ElasticConfig));
+            var configSerializer = new XmlSerializer(typeof(FirebaseConfig));
 
             if (!File.Exists(ConfigName))
             {
                 _logger.Info($"Generating default config at {configPath}");
 
-                var config = new ElasticConfig
+                var config = new FirebaseConfig
                 {
-                    NodeUrl = DefaultNodeUrl,
+                    GoogleCredentialJsonPath = "GoogleCredential.json",
                 };
 
                 using (var file = File.Create(configPath))
@@ -55,7 +53,7 @@ namespace Torch.Server.ElasticSearch
 
             using (var file = File.OpenRead(configPath))
             {
-                return (ElasticConfig) configSerializer.Deserialize(file);
+                return (FirebaseConfig) configSerializer.Deserialize(file);
             }
         }
     }

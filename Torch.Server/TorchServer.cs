@@ -23,6 +23,7 @@ using Torch.Mod;
 using Torch.Mod.Messages;
 using Torch.Server.Commands;
 using Torch.Server.ElasticSearch;
+using Torch.Server.Firebase;
 using Torch.Server.Managers;
 using Torch.Utils;
 using VRage;
@@ -65,6 +66,7 @@ namespace Torch.Server
             AddManager(new EntityControlManager(this));
             AddManager(new RemoteAPIManager(this));
             AddManager(new ElasticManager(this));
+            AddManager(new FirebaseManager(this));
             Config = config ?? new TorchConfig();
 
             var sessionManager = Managers.GetManager<ITorchSessionManager>();
