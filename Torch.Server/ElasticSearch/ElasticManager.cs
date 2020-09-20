@@ -1,8 +1,6 @@
 ﻿using System;
-using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Xml.Serialization;
 using Nest;
 using NLog;
 using Torch.API;
@@ -16,9 +14,6 @@ namespace Torch.Server.ElasticSearch
     /// </summary>
     public sealed class ElasticManager : Manager
     {
-        const string ConfigName = "Elastic.cfg";
-        const string DefaultNodeUrl = "http://localhost:9200";
-
         static readonly Logger _logger = LogManager.GetLogger(nameof(ElasticManager));
         readonly CancellationTokenSource _canceller;
 
@@ -39,7 +34,7 @@ namespace Torch.Server.ElasticSearch
         {
             try
             {
-                var config = InitConfig();
+                var config = ElasticConfig.Load();
                 var settings = new ConnectionSettings(new Uri(config.NodeUrl));
                 ElasticClient = new ElasticClient(settings);
 
@@ -56,37 +51,6 @@ namespace Torch.Server.ElasticSearch
         public override void Detach()
         {
             ElasticClient = null;
-        }
-
-        static ElasticConfig InitConfig()
-        {
-            var configPath = Path.Combine(Directory.GetCurrentDirectory(), ConfigName);
-
-            var configSerializer = new XmlSerializer(typeof(ElasticConfig));
-
-            if (!File.Exists(ConfigName))
-            {
-                _logger.Info($"Generating default config at {configPath}");
-
-                var config = new ElasticConfig
-                {
-                    NodeUrl = DefaultNodeUrl,
-                };
-
-                using (var file = File.Create(configPath))
-                {
-                    configSerializer.Serialize(file, config);
-                }
-
-                return config;
-            }
-
-            _logger.Info($"Loading config {configPath}");
-
-            using (var file = File.OpenRead(configPath))
-            {
-                return (ElasticConfig) configSerializer.Deserialize(file);
-            }
         }
 
         void PingTest()
