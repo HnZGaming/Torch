@@ -295,17 +295,112 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+
+    <Reference Include="CsvHelper">
+      <HintPath>..\..\influxdb-client-csharp\Client\bin\Release\netstandard2.0\CsvHelper.dll</HintPath>
+    </Reference>
+    <Reference Include="InfluxDB.Client">
+      <HintPath>..\..\influxdb-client-csharp\Client\bin\Release\netstandard2.0\InfluxDB.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="InfluxDB.Client.Core">
+      <HintPath>..\..\influxdb-client-csharp\Client\bin\Release\netstandard2.0\InfluxDB.Client.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="JsonSubTypes">
+      <HintPath>..\..\influxdb-client-csharp\Client\bin\Release\netstandard2.0\JsonSubTypes.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces">
+      <HintPath>..\..\influxdb-client-csharp\Client\bin\Release\netstandard2.0\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.ObjectPool">
+      <HintPath>..\..\influxdb-client-csharp\Client\bin\Release\netstandard2.0\Microsoft.Extensions.ObjectPool.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Net.Http.Headers">
+      <HintPath>..\..\influxdb-client-csharp\Client\bin\Release\netstandard2.0\Microsoft.Net.Http.Headers.dll</HintPath>
+    </Reference>
+    <Reference Include="NodaTime">
+      <HintPath>..\..\influxdb-client-csharp\Client\bin\Release\netstandard2.0\NodaTime.dll</HintPath>
+    </Reference>
+    <Reference Include="NodaTime.Serialization.JsonNet">
+      <HintPath>..\..\influxdb-client-csharp\Client\bin\Release\netstandard2.0\NodaTime.Serialization.JsonNet.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp">
+      <HintPath>..\..\influxdb-client-csharp\Client\bin\Release\netstandard2.0\RestSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Buffers">
+      <HintPath>..\..\influxdb-client-csharp\Client\bin\Release\netstandard2.0\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Collections.Concurrent">
+      <HintPath>..\..\influxdb-client-csharp\Client\bin\Release\netstandard2.0\System.Collections.Concurrent.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Collections.Immutable">
+      <HintPath>..\..\influxdb-client-csharp\Client\bin\Release\netstandard2.0\System.Collections.Immutable.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Diagnostics.DiagnosticSource">
+      <HintPath>..\..\influxdb-client-csharp\Client\bin\Release\netstandard2.0\System.Diagnostics.DiagnosticSource.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.FileSystem.Primitives">
+      <HintPath>..\..\influxdb-client-csharp\Client\bin\Release\netstandard2.0\System.IO.FileSystem.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Linq">
+      <HintPath>..\..\influxdb-client-csharp\Client\bin\Release\netstandard2.0\System.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Memory">
+      <HintPath>..\..\influxdb-client-csharp\Client\bin\Release\netstandard2.0\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics.Vectors">
+      <HintPath>..\..\influxdb-client-csharp\Client\bin\Release\netstandard2.0\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive">
+      <HintPath>..\..\influxdb-client-csharp\Client\bin\Release\netstandard2.0\System.Reactive.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe">
+      <HintPath>..\..\influxdb-client-csharp\Client\bin\Release\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.InteropServices.WindowsRuntime">
+      <HintPath>..\..\influxdb-client-csharp\Client\bin\Release\netstandard2.0\System.Runtime.InteropServices.WindowsRuntime.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Numerics">
+      <HintPath>..\..\influxdb-client-csharp\Client\bin\Release\netstandard2.0\System.Runtime.Numerics.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.AccessControl">
+      <HintPath>..\..\influxdb-client-csharp\Client\bin\Release\netstandard2.0\System.Security.AccessControl.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.OpenSsl">
+      <HintPath>..\..\influxdb-client-csharp\Client\bin\Release\netstandard2.0\System.Security.Cryptography.OpenSsl.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Primitives">
+      <HintPath>..\..\influxdb-client-csharp\Client\bin\Release\netstandard2.0\System.Security.Cryptography.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.ProtectedData">
+      <HintPath>..\..\influxdb-client-csharp\Client\bin\Release\netstandard2.0\System.Security.Cryptography.ProtectedData.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Permissions">
+      <HintPath>..\..\influxdb-client-csharp\Client\bin\Release\netstandard2.0\System.Security.Permissions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Principal.Windows">
+      <HintPath>..\..\influxdb-client-csharp\Client\bin\Release\netstandard2.0\System.Security.Principal.Windows.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading">
+      <HintPath>..\..\influxdb-client-csharp\Client\bin\Release\netstandard2.0\System.Threading.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions">
+      <HintPath>..\..\influxdb-client-csharp\Client\bin\Release\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\Versioning\AssemblyVersion.cs">
       <Link>Properties\AssemblyVersion.cs</Link>
     </Compile>
     <Compile Include="Commands\WhitelistCommands.cs" />
+    <Compile Include="ConfigUtils.cs" />
     <Compile Include="ElasticSearch\ElasticManager.cs" />
     <Compile Include="ElasticSearch\ElasticConfig.cs" />
     <Compile Include="Firebase\FirebaseConfig.cs" />
     <Compile Include="Firebase\FirebaseManager.cs" />
     <Compile Include="FlowDocumentTarget.cs" />
+    <Compile Include="InfluxDb\InfluxDbClient.cs" />
+    <Compile Include="InfluxDb\InfluxDbConfig.cs" />
+    <Compile Include="InfluxDb\InfluxDbManager.cs" />
     <Compile Include="ListBoxExtensions.cs" />
     <Compile Include="Managers\EntityControlManager.cs" />
     <Compile Include="Managers\MultiplayerManagerDedicated.cs" />
