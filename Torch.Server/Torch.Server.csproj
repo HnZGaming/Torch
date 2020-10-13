@@ -419,6 +419,11 @@
     <Compile Include="TorchServiceInstaller.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Utils\LinqUtils.cs" />
+    <Compile Include="Utils\TaskUtils.cs" />
+    <Compile Include="Utils\ThreadPoolTask.cs" />
+    <Compile Include="Utils\TorchPluginBaseEx.cs" />
+    <Compile Include="Utils\VRageUtils.cs" />
     <Compile Include="ViewModels\BlockLimitViewModel.cs" />
     <Compile Include="ViewModels\CheckpointViewModel.cs" />
     <Compile Include="ViewModels\Entities\Blocks\BlockViewModel.cs" />
