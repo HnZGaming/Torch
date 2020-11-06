@@ -24,7 +24,6 @@ using Torch.Mod.Messages;
 using Torch.Server.Commands;
 using Torch.Server.ElasticSearch;
 using Torch.Server.Firebase;
-using Torch.Server.InfluxDb;
 using Torch.Server.Managers;
 using Torch.Utils;
 using VRage;
@@ -68,7 +67,6 @@ namespace Torch.Server
             AddManager(new RemoteAPIManager(this));
             AddManager(new ElasticManager(this));
             AddManager(new FirebaseManager(this));
-            AddManager(new InfluxDbManager(this));
             Config = config ?? new TorchConfig();
 
             var sessionManager = Managers.GetManager<ITorchSessionManager>();
