@@ -105,9 +105,9 @@ namespace Torch.Managers
 
         private void OnClientLeft(ulong steamId, MyChatMemberStateChangeEnum stateChange)
         {
-            Players.TryGetValue(steamId, out PlayerViewModel vm);
-            if (vm == null)
-                vm = new PlayerViewModel(steamId);
+            if (!Players.TryGetValue(steamId, out PlayerViewModel vm))
+                return;
+            
             _log.Info($"{vm.Name} ({vm.SteamId}) {(ConnectionState)stateChange}.");
             PlayerLeft?.Invoke(vm);
             Players.Remove(steamId);

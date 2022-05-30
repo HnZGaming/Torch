@@ -30,14 +30,6 @@ namespace Torch.Server.Managers
     {
         private static readonly Logger _log = LogManager.GetCurrentClassLogger();
 
-#pragma warning disable 649
-        [ReflectedGetter(Name = "m_members")]
-        private static Func<MyDedicatedServerBase, List<ulong>> _members;
-
-        [ReflectedGetter(Name = "m_waitingForGroup")]
-        private static Func<MyDedicatedServerBase, HashSet<ulong>> _waitingForGroup;
-#pragma warning restore 649
-
         /// <inheritdoc />
         public IReadOnlyList<ulong> BannedPlayers => MySandboxGame.ConfigDedicated.Banned;
 
@@ -245,18 +237,18 @@ namespace Torch.Server.Managers
             if (IsProfiling(steamId))
             {
                 _log.Warn($"Rejecting user {steamId} for using Profiler/ModSDK!");
-                UserRejected(steamId, JoinResult.ProfilingNotAllowed);
+                CommitVerdict(steamId, JoinResult.ProfilingNotAllowed);
             }
             else if (Torch.CurrentSession.KeenSession.OnlineMode == MyOnlineModeEnum.OFFLINE &&
                      promoteLevel < MyPromoteLevel.Admin)
             {
                 _log.Warn($"Rejecting user {steamId}, world is set to offline and user is not admin.");
-                UserRejected(steamId, JoinResult.TicketCanceled);
+                CommitVerdict(steamId, JoinResult.TicketCanceled);
             }
             else if (MySandboxGame.ConfigDedicated.GroupID == 0uL)
                 RunEvent(new ValidateAuthTicketEvent(steamId, steamOwner, response, 0, true, false));
             else if (_getServerAccountType(MySandboxGame.ConfigDedicated.GroupID) != MyGameServiceAccountType.Clan)
-                UserRejected(steamId, JoinResult.GroupIdInvalid);
+                CommitVerdict(steamId, JoinResult.GroupIdInvalid);
             else if (MyGameService.GameServer.RequestGroupStatus(steamId, MySandboxGame.ConfigDedicated.GroupID))
                 lock (_waitingForGroupLocal)
                 {
@@ -265,10 +257,24 @@ namespace Torch.Server.Managers
                     _waitingForGroupLocal.Add(new WaitingForGroup(steamId, response, steamOwner));
                 }
             else
-                UserRejected(steamId, JoinResult.SteamServersOffline);
+                CommitVerdict(steamId, JoinResult.SteamServersOffline);
         }
 
         private void RunEvent(ValidateAuthTicketEvent info)
+        {
+            try
+            {
+                RunEventInternal(info);
+            }
+            catch (Exception e)
+            {
+                _log.Error(e, $"Exception while running second validation phase for user {info.SteamID}");
+                info.Result = JoinResult.TicketCanceled;
+            }
+            CommitVerdict(info.SteamID, info.Result);
+        }
+
+        private void RunEventInternal(ValidateAuthTicketEvent info)
         {
             JoinResult internalAuth;
 
@@ -278,7 +284,7 @@ namespace Torch.Server.Managers
             else if (_isClientKicked(MyMultiplayer.Static, info.SteamID) ||
                      _isClientKicked(MyMultiplayer.Static, info.SteamOwner))
                 internalAuth = JoinResult.KickedRecently;
-            else if (info.SteamResponse == JoinResult.OK)
+            else if (info.Result == JoinResult.OK)
             {
                 var config = (TorchConfig) Torch.Config;
                 if (config.EnableWhitelist && !config.Whitelist.Contains(info.SteamID))
@@ -307,38 +313,23 @@ namespace Torch.Server.Managers
                 }
             }
             else
-                internalAuth = info.SteamResponse;
+                internalAuth = info.Result;
 
-            info.FutureVerdict = Task.FromResult(internalAuth);
-
+            info.Result = internalAuth;
             MultiplayerManagerDedicatedEventShim.RaiseValidateAuthTicket(ref info);
-
-            info.FutureVerdict.ContinueWith((task) =>
-            {
-                JoinResult verdict;
-                if (task.IsFaulted)
-                {
-                    _log.Error(task.Exception, $"Future validation verdict faulted");
-                    verdict = JoinResult.TicketCanceled;
-                }
-                else if (Players.ContainsKey(info.SteamID))
-                {
-                    _log.Warn($"Player {info.SteamID} has already joined!");
-                    verdict = JoinResult.AlreadyJoined;
-                }
-                else
-                    verdict = task.Result;
-
-                Torch.Invoke(() => { CommitVerdict(info.SteamID, verdict); });
-            });
         }
 
         private void CommitVerdict(ulong steamId, JoinResult verdict)
         {
             if (verdict == JoinResult.OK)
+            {
                 UserAccepted(steamId);
+            }
             else
+            {
                 UserRejected(steamId, verdict);
+                _log.Info($"Player {steamId} rejected with verdict {verdict}.");
+            }
         }
 
         private void UserGroupStatusResponse(ulong userId, ulong groupId, bool member, bool officer)

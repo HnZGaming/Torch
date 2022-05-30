@@ -26,7 +26,7 @@ namespace Torch.Server.Managers
 
     /// <summary>
     /// Event that occurs when a player tries to connect to a dedicated server.
-    /// Use these values to choose a <see cref="ValidateAuthTicketEvent.FutureVerdict"/>, 
+    /// Use these values to choose a <see cref="ValidateAuthTicketEvent.Result"/>, 
     /// or leave it unset to allow the default logic to handle the request.
     /// </summary>
     public struct ValidateAuthTicketEvent : IEvent
@@ -40,11 +40,6 @@ namespace Torch.Server.Managers
         /// SteamID of the game owner
         /// </summary>
         public readonly ulong SteamOwner;
-
-        /// <summary>
-        /// The response from steam
-        /// </summary>
-        public readonly JoinResult SteamResponse;
 
         /// <summary>
         /// ID of the queried group, or <c>0</c> if no group.
@@ -62,23 +57,27 @@ namespace Torch.Server.Managers
         public readonly bool Officer;
 
         /// <summary>
-        /// A future verdict on this authorization request.  If null, let the default logic choose.  If not async use <see cref="Task.FromResult{TResult}(TResult)"/>
+        /// Result of all validation steps, changes will overwrite previous results.
         /// </summary>
-        public Task<JoinResult> FutureVerdict;
+        /// <remarks>
+        /// Don't recommend to change it, if it's not <see cref="JoinResult.OK"/>
+        /// </remarks>
+        public JoinResult Result;
 
-        internal ValidateAuthTicketEvent(ulong steamId, ulong steamOwner, JoinResult steamResponse,
+        internal ValidateAuthTicketEvent(ulong steamId, ulong steamOwner, JoinResult result,
             ulong serverGroup, bool member, bool officer)
         {
             SteamID = steamId;
             SteamOwner = steamOwner;
-            SteamResponse = steamResponse;
             Group = serverGroup;
             Member = member;
             Officer = officer;
-            FutureVerdict = null;
+            Result = result;
         }
 
-        /// <inheritdoc/>
-        public bool Cancelled => FutureVerdict != null;
+        /// <summary>
+        /// This event cannot be cancelled, set <see cref="Result" /> to other than <see cref="JoinResult.OK"/>
+        /// </summary>
+        public bool Cancelled => false;
     }
 }
